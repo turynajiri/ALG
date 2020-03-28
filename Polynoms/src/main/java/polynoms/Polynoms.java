@@ -3,7 +3,7 @@ package polynoms;
 public class Polynoms {
 
     // knihovní třída 
-    private Polynoms() { // aby se nemohl vytvořit objekt
+    private Polynoms() {
 
     }
 
@@ -12,11 +12,7 @@ public class Polynoms {
         Polynom max = isABigger ? a : b; // Math.max(a.getDegree(), b.getDegree());
         Polynom min = isABigger ? b : a;
 
-        double[] sumCoef = new double[max.getDegree() + 1]; // 3. stupen -> potřebujeme pole o velikosti 4 -> pole 0 - 3
-        /*    6 0 3 5
-              1 3 6 
-              -------
-        sum = 7 3 9 5 */
+        double[] sumCoef = new double[max.getDegree() + 1]; // 3. stupen -> potřebujeme pole o velikosti 4
         for (int i = 0; i < max.getDegree() + 1; i++) {
             sumCoef[i] = max.getCoefAt(i);
         }
@@ -28,11 +24,7 @@ public class Polynoms {
 
     }
 
-    //TODO
-    /*  6x0 0x1 3x2 5x3
-        1x0 3x1 6x2
-        -------------------
-        6   3x1 18x2 5x3*/
+    //TODO -> Multiply
     public static Polynom multiply(Polynom a, Polynom b) {
         boolean isABigger = a.getDegree() > b.getDegree();
         Polynom max = isABigger ? a : b; 
