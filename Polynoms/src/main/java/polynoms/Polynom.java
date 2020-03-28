@@ -3,7 +3,6 @@ package polynoms;
 import java.util.Arrays;
 import java.lang.*;
 
-// Promyslet: Data, Konstruktory, Metody
 public class Polynom {
 
     // Data: 5x3 + 3x2 + 6  -> jak uložit 
@@ -24,7 +23,7 @@ public class Polynom {
     }
 
     // tovární metoda - uživatel zadá [5 3 0 6] (postupně od největší mocniny)   
-    public static Polynom getInstance(double... coef) { // Znamená, že to bude reagovat na všechny typy doublů, 7 3 0 6
+    public static Polynom getInstance(double... coef) { // Znamená, že to bude reagovat na všechny typy doublů
         double[] coefTemp = new double[coef.length];
         for (int i = 0; i < coef.length; i++) {
             coefTemp[coefTemp.length - 1 - i] = coef[i];
@@ -34,6 +33,7 @@ public class Polynom {
     }
 
     // metody
+    
     // gettery
     public double getCoefAt(int exp) {
         return coef[exp];
@@ -43,13 +43,13 @@ public class Polynom {
         return Arrays.copyOf(coef, coef.length);
     }
 
-    public int getDegree() { // vrací stupeň polynomu
+    public int getDegree() { 
         return coef.length - 1;
     }
 
     // 5x3 zderivované na 15x2
     public Polynom derivate() {
-        double[] coefD = new double[this.coef.length - 1]; // derivace je o jedno i menší
+        double[] coefD = new double[this.coef.length - 1];
         for (int i = 0; i < coefD.length; i++) {
             coefD[i] = coef[i + 1] * (i + 1);
         }
@@ -83,8 +83,7 @@ public class Polynom {
         return tmp.toString();
     }
 
-    // TODO -> nepoužívat Math.power nebo x*x
-    //      -> použít Horneovo schéma
+    // TODO -> Horneovo schéma
     // y = 5x3 + 3x2 + 6; x = 1, y = 5+3+6 = 14
     public double computeValue(double x) {
         double sum = coef[coef.length - 1];
