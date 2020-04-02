@@ -1,11 +1,16 @@
 package polynoms;
 
+/**
+ * 
+ * @author Jiri Turyna
+ */
+
 public class Polynoms {
 
     // knihovní třída 
     private Polynoms() {
 
-    }
+    }   
 
     public static Polynom sum(Polynom a, Polynom b) {
         boolean isABigger = a.getDegree() > b.getDegree();

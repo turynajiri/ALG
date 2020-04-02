@@ -3,6 +3,11 @@ package polynoms;
 import java.util.Arrays;
 import java.lang.*;
 
+/**
+ * 
+ * @author Jiri Turyna
+ */
+
 public class Polynom {
 
     // Data: 5x3 + 3x2 + 6  -> jak uložit 
