@@ -1,17 +1,17 @@
+package cmd;
 
-import cmd.Command;
 import java.io.File;
 
 /**
  *
  * @author Jiri.Turyna
  */
-public class Rename extends Command{
+public class Rename extends Command {
 
     @Override
     public String execute(File actualDir) {
         File file;
-        if (params.length != 3){
+        if (params.length != 3) {
             return "Unknown command";
         } else {
             File f1 = new File(actualDir.getAbsolutePath() + "\\" + params[1]);
@@ -20,5 +20,5 @@ public class Rename extends Command{
             return "Rename completed";
         }
     }
-    
+
 }
