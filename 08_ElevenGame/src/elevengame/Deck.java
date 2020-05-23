@@ -12,7 +12,7 @@ import java.util.List;
 public class Deck {
 
     //do not have to change during the game, deckSize can simulate removing the cards
-    private List<Card> deckCards;
+    private ArrayList<Card> deckCards;
     private int deckSize; //actual deck size
 
     public Deck(String[] symbols, String[] values, int[] nPoints) {
