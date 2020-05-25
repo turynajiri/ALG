@@ -98,7 +98,7 @@ public class Data implements Interface {
         Data data = new Data();
         data.load();
         
-        System.out.println(data.infoByName("Erin"));
+        System.out.println(data);
                 
     }
 

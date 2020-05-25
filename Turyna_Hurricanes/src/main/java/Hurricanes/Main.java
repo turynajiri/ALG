@@ -1,7 +1,5 @@
 package Hurricanes;
 
-import java.awt.BorderLayout;
-import java.io.File;
 import java.util.Scanner;
 
 /**
