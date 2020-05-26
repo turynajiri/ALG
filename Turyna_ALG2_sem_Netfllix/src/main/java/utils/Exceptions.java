@@ -10,9 +10,9 @@ public class Exceptions {
     public Exceptions() {
     }
     
-    public String loginError(){
-        return(" Error! \n"
-                + "Credentials do not match. Try again");
+    public boolean loginError(){
+        System.out.println("\n" + "Error!" + "\n" + "Credentials do not match. Try again");
+        return false;
     }
 
     public String FileNotFound() {
@@ -28,6 +28,10 @@ public class Exceptions {
     }
 
     public String GenerNotFound() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void IOException() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

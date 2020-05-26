@@ -12,11 +12,11 @@ import utils.Exceptions;
  *
  * @author Jiri.Turyna
  */
-public class MovieData {
+public class MovieData implements MovieInterface {
 
-    private static Exceptions ex = new Exceptions();
-    private static ArrayList<Movie> normalMovieData = new ArrayList<>();
-    private static ArrayList<Movie> premiumMovieData = new ArrayList<>();
+    private Exceptions ex = new Exceptions();
+    private ArrayList<Movie> normalMovieData = new ArrayList<>();
+    private ArrayList<Movie> premiumMovieData = new ArrayList<>();
 
     public String listByGener(String gener) {
         StringBuilder sb = new StringBuilder();
@@ -76,7 +76,7 @@ public class MovieData {
         return sb.toString();
     }
 
-    public static void load(String status) throws FileNotFoundException {
+    public void load(String status) throws FileNotFoundException {
 
         File f;
         Scanner sc;
@@ -90,13 +90,15 @@ public class MovieData {
             try {
                 f = new File("data/NormalMovies.txt");
                 sc = new Scanner(f);
+                int i = 0;
                 while (sc.hasNext()) {
                     gener = sc.next();
                     releasedYear = sc.nextInt();
                     rating = sc.nextDouble();
                     name = sc.nextLine();
 
-                    Movie m = new Movie(name, gener, releasedYear, rating);
+                    Movie m = new Movie(name, gener, releasedYear, rating, i);
+                    i++;
                     normalMovieData.add(m);
                 }
 
@@ -108,13 +110,16 @@ public class MovieData {
             try {
                 f = new File("data/PremiumMovies.txt");
                 sc = new Scanner(f);
+                int i = 0;
+
                 while (sc.hasNext()) {
                     gener = sc.next();
                     releasedYear = sc.nextInt();
                     rating = sc.nextDouble();
                     name = sc.nextLine();
-
-                    Movie m = new Movie(name, gener, releasedYear, rating);
+                    
+                    Movie m = new Movie(name, gener, releasedYear, rating, i);
+                    i++;
                     premiumMovieData.add(m);
                 }
 
@@ -125,10 +130,10 @@ public class MovieData {
         } else {
             ex.badUserArgument();
         }
+
     }
 
-    @Override
-    public String toString() {
+    public String printListofMovies() {
         StringBuilder sb = new StringBuilder();
         for (Movie m : normalMovieData) {
             sb.append(m);
@@ -141,10 +146,25 @@ public class MovieData {
 
         return sb.toString();
     }
+    
+    public String getMovieByID(int id){
+        StringBuilder sb = new StringBuilder();
+        for (Movie m : normalMovieData){
+            if (m.getid() == id){
+                sb.append(m.getName());
+            }
+        } 
+        for (Movie m : premiumMovieData){
+            if (m.getid() == id){
+                sb.append(m.getName());
+            }
+        } 
+        return sb.toString();
+    }
 
     public static void main(String[] args) throws FileNotFoundException {
         MovieData data = new MovieData();
         data.load("n");
-        System.out.println(data.listByRating(82));
+        System.out.println(data.getMovieByID(1));
     }
 }
