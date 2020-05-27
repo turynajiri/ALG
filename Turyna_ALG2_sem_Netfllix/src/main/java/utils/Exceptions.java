@@ -4,8 +4,7 @@ package utils;
  *
  * @author Jiri.Turyna
  */
-public class Exceptions {
-    
+public class Exceptions {    
 
     public Exceptions() {
     }
@@ -15,23 +14,39 @@ public class Exceptions {
         return false;
     }
 
-    public String FileNotFound() {
-        return ("File not Found");
+    public void FileNotFound() {
+        System.out.println("File not found");
     }
 
-    public String badUserArgument() {
-        return ("Wrong User Argument");
+    public void badUserArgument() {
+        System.out.println("Wrong user argument");
     }
 
-    public String MovieNotFound() {
-        return "Movie not found";
+    public void MovieNotFound() {
+        System.out.println("Movie not found");
     }
 
-    public String GenerNotFound() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void GenreNotFound() {
+        System.out.println("Genre not found");
     }
 
     public void IOException() {
+        System.out.println("IOException");
+    }
+
+    public void FileNotDeleted() {
+        System.out.println("File not deleted");
+    }
+
+    public void wrongRating() {
+        System.out.println("Rating has to be from 0-100");
+    }
+
+    public void wrongYear() {
+        System.out.println("No movies found for this year");
+    }
+
+    public void wrongArgument() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

@@ -6,14 +6,14 @@ package Netflix;
  */
 public class Movie {
     private String name;
-    private String gener;
+    private String genre;
     private int releasedYear;
     private double rating;
     private int id;
 
-    public Movie(String name, String gener, int releasedYear, double rating, int id) {
+    public Movie(String name, String genre, int releasedYear, double rating, int id) {
         this.name = name;
-        this.gener = gener;
+        this.genre = genre;
         this.releasedYear = releasedYear;
         this.rating = rating;
         this.id = id;
@@ -23,8 +23,8 @@ public class Movie {
         return name;
     }
 
-    public String getGener() {
-        return gener;
+    public String getGenre() {
+        return genre;
     }
 
     public int getReleasedYear() {
@@ -41,7 +41,7 @@ public class Movie {
 
     @Override
     public String toString() {
-        return id + "." + name + ", " + gener + ", " + releasedYear + ", " + rating + "%";
+        return id + "." + name + ", " + genre + ", " + releasedYear + ", " + rating + "%";
     }
     
 }

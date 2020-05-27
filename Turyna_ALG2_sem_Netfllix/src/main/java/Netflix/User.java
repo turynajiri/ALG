@@ -1,14 +1,7 @@
 package Netflix;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Scanner;
 import utils.Exceptions;
 
 /**
@@ -35,28 +28,16 @@ public class User {
         this.username = username;
     }
 
-    public User() {
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getStatus() {
         return status;
-    }
-
-    public String getStatusByUsername(String username) throws FileNotFoundException {
-        String status;
-        userData us = new userData();
-        us.loadUserData();
-        status = us.loadStatusOfUser(username);
-        return status;
-    }
-    
-    public String getPassByUsername(String username) throws FileNotFoundException {
-        String password;
-        userData us = new userData();
-        us.loadUserData();
-        password = us.loadSPasswordOfUser(username);
-        return password;
     }
 
     public String getUsername() {
@@ -69,40 +50,6 @@ public class User {
 
     public String getPassword() {
         return password;
-    }
-
-    public void login(String username) {
-    }
-
-    public String watchMovie(String movie) {
-        return "Watching a movie " + movie;
-    }
-
-    public void createNewUser(String username, String password) throws IOException {
-        String status = "n";
-
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader("data/Accounts.txt"));
-            File f = new File("data/Accounts.txt");
-            FileWriter fileWriter = new FileWriter(f, true);
-            int lines = 0;
-            while (reader.readLine() != null) {
-                lines++;
-            }
-            reader.close();
-            String str = (lines + " " + username + " " + status + " " + password + "\n");
-            fileWriter.write(str);
-            fileWriter.close();
-            
-            
-        } catch (Exception e) {
-            ex.IOException();
-        }
-
-    }
-    
-    public void changePassword (String username, String password){
-        
     }
 
     @Override

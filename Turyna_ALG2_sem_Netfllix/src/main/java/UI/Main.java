@@ -5,7 +5,7 @@ import Netflix.MovieData;
 import Netflix.MovieInterface;
 import Netflix.User;
 import Netflix.UserInterface;
-import java.io.File;
+import java.awt.BorderLayout;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
@@ -38,39 +38,38 @@ public class Main {
             switch (choice1) {
                 // Log in
                 case 1:
+
                     System.out.println("\n Username:");
                     String username = sc.next();
-                    System.out.println("Password: ");
+                    System.out.println("\n Password: ");
                     String password = sc.next();
-                    userData l = new userData();
 
-                    if (l.check(username, password)) {
-                        User u = new User(username);
+                    if (ui.check(username, password)) {
 
                         check = true;
                         name = username;
-                        u.login(username);
+                        ui.login(username);
                         break;
-                    } else {
-                        continue;
                     }
+                    username = null;
+                    password = null;
+                    break;
 
                 // Register new user    
                 case 2:
                     ui.loadUserData();
 
-                    System.out.println("Username:");
+                    System.out.println("\n Username:");
                     String newUsername = sc.next();
-                    System.out.println("Password: ");
+                    System.out.println("\n Password: \n");
                     String newPassword = sc.next();
 
                     if (!ui.checkIfExists(newUsername)) {
-                        User u = new User();
-                        u.createNewUser(newUsername, newPassword);
-                        System.out.println("\n User created, try loging in!");
+                        ui.createNewUser(newUsername, newPassword);
+                        System.out.println("\n User created, try loging in! \n");
 
                     } else {
-                        System.out.println("\n User with this name already exists. Try again");
+                        System.out.println("\n User with this name already exists. Try again \n");
                     }
 
                     continue;
@@ -85,12 +84,11 @@ public class Main {
 
         if (check) {
 
-            User u = new User(name);
             MovieInterface mi = new MovieData();
             int movie;
 
             // normal or premium user
-            if ((u.getStatusByUsername(name).equals("n") || u.getStatusByUsername(name).equals("p"))) {
+            if ((ui.getStatusByUsername(name).equals("n") || ui.getStatusByUsername(name).equals("p"))) {
                 do {
                     System.out.println(getMenu2());
                     choice2 = sc.nextInt();
@@ -98,54 +96,136 @@ public class Main {
                     switch (choice2) {
                         // Watch a movie
                         case 1:
-                            if (u.getStatusByUsername(name).equals("n")) {
+                            if (ui.getStatusByUsername(name).equals("n")) {
+                                mi.empty();
                                 mi.load("n");
                                 System.out.println(mi.printListofMovies());
-                                System.out.println("Which movie would you like to watch??");
+                                System.out.println("\n Which movie would you like to watch?? \n");
                                 movie = sc.nextInt();
-                                System.out.println(u.watchMovie(mi.getMovieByID(movie)));
+                                System.out.println(ui.watchMovie(mi.getMovieByID(movie)));
 
                             }
-                            if (u.getStatusByUsername(name).equals("p")) {
+                            if (ui.getStatusByUsername(name).equals("p")) {
+                                mi.empty();
                                 mi.load("p");
                                 System.out.println(mi.printListofMovies());
-                                System.out.println("Which movie would you like to watch??");
+                                System.out.println("\n Which movie would you like to watch?? \n");
                                 movie = sc.nextInt();
-                                System.out.println(u.watchMovie(mi.getMovieByID(movie)));
+                                System.out.println(ui.watchMovie(mi.getMovieByID(movie)));
 
                             }
                             break;
 
                         // Change password   
                         case 2:
-                            int choice3 = 0;
-                            boolean check2 = false;
-                            do {
-                                choice3 = sc.nextInt();
-                                System.out.println(getMenu4());
-                                switch (choice3) {
-                                    case 1:
-                                        System.out.println("\n Zadejte stávající heslo");
-                                        String oldPass = u.getPassByUsername(name);
-                                        String userOldPass = sc.next();
-                                        if (oldPass.equals(userOldPass)) {
-                                            System.out.println("\n Zadejte nové heslo");
-                                            String newPass = sc.next();
-                                            u.changePassword(name, newPass);
-                                        }
+                            System.out.println("\n Your current password: \n");
+                            String oldPass = ui.getPasswordByUsername(name);
+                            String userOldPass = sc.next();
+                            if (oldPass.equals(userOldPass)) {
+                                System.out.println("\n New password: \n");
+                                String newPass = sc.next();
+                                ui.changePassword(name, newPass);
+                                System.out.println("\n Password changed \n");
+                            }
+                            ui.empty();
+                            ui.loadUserData();
 
-                                    //Cancel
+                            break;
+                        // Manage subscription
+                        case 3:
+                            if (ui.getStatusByUsername(name).equals("n")) {
+                                ui.improveStatus(name);
+                                System.out.println("\n Your status was upgraded to Premium User \n");
+                            } else {
+                                System.out.println("\n You are already a Premium user \n");
+                            }
+                            ui.empty();
+                            ui.loadUserData();
+                            break;
+
+                        //Filter Movies
+                        case 4:
+                            String genre;
+                            double rating;
+                            int year;
+                            int choice3 = -1;
+
+                            do {
+                                System.out.println(getMenu4());
+
+                                choice3 = sc.nextInt();
+
+                                switch (choice3) {
+                                    // Filter by genre
+                                    case 1:
+                                        if (ui.getStatusByUsername(name).equals("n")) {
+                                            mi.empty();
+                                            mi.load("n");
+
+                                            System.out.println("\n Insert genre to filter by (Comedy) \n");
+                                            genre = sc.next();
+                                            System.out.println(mi.listByGenre(genre));
+
+                                        } else {
+                                            mi.empty();
+                                            mi.load("p");
+
+                                            System.out.println("\n Insert genre to filrer by (Comedy, Romantic, Drama, Sci-fi) \n");
+                                            genre = sc.next();
+                                            System.out.println(mi.listByGenre(genre));
+                                        }
+                                        break;
+
+                                    // Filter by rating
+                                    case 2:
+                                        if (ui.getStatusByUsername(name).equals("n")) {
+                                            mi.empty();
+                                            mi.load("n");
+
+                                            System.out.println("\n Insert rating to print List of movies with equal or higher rating \n");
+                                            rating = sc.nextDouble();
+                                            System.out.println(mi.listByRating(rating));
+
+                                        } else {
+                                            mi.empty();
+                                            mi.load("p");
+
+                                            System.out.println("\n Insert rating to print List of movies with equal or higher rating \n");
+                                            rating = sc.nextDouble();
+                                            System.out.println(mi.listByRating(rating));
+
+                                        }
+                                        break;
+
+                                    // Filer by year of release
+                                    case 3:
+                                        if (ui.getStatusByUsername(name).equals("n")) {
+                                            mi.empty();
+                                            mi.load("n");
+
+                                            System.out.println("\n Insert year to print List of movies that were released in that year \n");
+
+                                            year = sc.nextInt();
+                                            System.out.println(mi.listByYear(year));
+
+                                        } else {
+                                            mi.empty();
+                                            mi.load("p");
+
+                                            System.out.println("\n Insert year to print List of movies that were released in that year \n");
+
+                                            year = sc.nextInt();
+                                            System.out.println(mi.listByYear(year));
+
+                                        }
+                                        break;
+
                                     case 0:
                                         break;
                                     default:
                                         break;
                                 }
-
-                            } while (choice3 != 0 || check2);
-                            break;
-
-                        // Manage subscription
-                        case 3:
+                            } while (choice3 != 0);
                             break;
                         case 0:
                             break;
@@ -157,7 +237,7 @@ public class Main {
             }
 
             // admin account
-            if (u.getStatusByUsername(name).equals("a")) {
+            if (ui.getStatusByUsername(name).equals("a")) {
                 do {
                     System.out.println(getMenu3());
                     choice2 = sc.nextInt();
@@ -187,6 +267,7 @@ public class Main {
         return "1: Watch a movie \n"
                 + "2: Change password \n"
                 + "3: Manage subscription \n"
+                + "4: Filter movies \n"
                 + "0: Exit App";
     }
 
@@ -196,8 +277,11 @@ public class Main {
                 + "0: Exit App";
     }
 
-    private static boolean getMenu4() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private static String getMenu4() {
+        return "1: Filter by genre \n"
+                + "2: Filter by rating \n"
+                + "3: Filter by year of release \n"
+                + "0: Go back";
     }
 
 }

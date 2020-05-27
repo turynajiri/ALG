@@ -1,5 +1,6 @@
 package Netflix;
 
+import java.awt.BorderLayout;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -18,17 +19,17 @@ public class MovieData implements MovieInterface {
     private ArrayList<Movie> normalMovieData = new ArrayList<>();
     private ArrayList<Movie> premiumMovieData = new ArrayList<>();
 
-    public String listByGener(String gener) {
+    public String listByGenre(String genre) throws IllegalArgumentException {
         StringBuilder sb = new StringBuilder();
 
         for (Movie m : normalMovieData) {
-            if (m.getGener().equals(gener)) {
+            if (m.getGenre().equals(genre)) {
                 sb.append(m.getName() + "\n");
             }
         }
 
         for (Movie m : premiumMovieData) {
-            if (m.getGener().equals(gener)) {
+            if (m.getGenre().equals(genre)) {
                 sb.append(m.getName() + "\n");
             }
         }
@@ -36,31 +37,34 @@ public class MovieData implements MovieInterface {
         return sb.toString();
     }
 
-    public String listByYear(int year) {
-
+    public String listByYear(int year) throws IllegalArgumentException {
         StringBuilder sb = new StringBuilder();
 
-        for (Movie m : normalMovieData) {
-            ArrayList<Movie> sortedData = normalMovieData;
-            if (m.getReleasedYear() == year) {
-                sb.append(m.getName() + " " + m.getReleasedYear() + "\n");
-            }
-        }
+        try {
 
-        for (Movie m : premiumMovieData) {
-            ArrayList<Movie> sortedData = premiumMovieData;
-            Collections.sort(sortedData, Collections.reverseOrder(Comparator.comparing(Movie::getRating)));
-            if (m.getReleasedYear() == year) {
-                sb.append(m.getName() + " " + m.getReleasedYear() + "\n");
-            }
-        }
+            for (Movie m : normalMovieData) {
 
+                ArrayList<Movie> sortedData = normalMovieData;
+                if (m.getReleasedYear() == year) {
+                    sb.append(m.getName() + " " + m.getReleasedYear() + "\n");
+                }
+            }
+
+            for (Movie m : premiumMovieData) {
+                ArrayList<Movie> sortedData = premiumMovieData;
+                Collections.sort(sortedData, Collections.reverseOrder(Comparator.comparing(Movie::getRating)));
+                if (m.getReleasedYear() == year) {
+                    sb.append(m.getName() + " " + m.getReleasedYear() + "\n");
+                }
+            }
+        } catch (Exception e) {
+            ex.wrongYear();
+        }
         return sb.toString();
     }
 
-    public String listByRating(double rating) {
+    public String listByRating(double rating) throws IllegalArgumentException {
         StringBuilder sb = new StringBuilder();
-
         for (Movie m : normalMovieData) {
             if (m.getRating() >= rating) {
                 sb.append(m.getName() + " " + m.getRating() + "\n");
@@ -72,7 +76,6 @@ public class MovieData implements MovieInterface {
                 sb.append(m.getName() + " " + m.getRating() + "\n");
             }
         }
-
         return sb.toString();
     }
 
@@ -83,7 +86,7 @@ public class MovieData implements MovieInterface {
 
         String name;
         int releasedYear;
-        String gener;
+        String genre;
         double rating;
 
         if (status == "n") {
@@ -92,12 +95,12 @@ public class MovieData implements MovieInterface {
                 sc = new Scanner(f);
                 int i = 0;
                 while (sc.hasNext()) {
-                    gener = sc.next();
+                    genre = sc.next();
                     releasedYear = sc.nextInt();
                     rating = sc.nextDouble();
                     name = sc.nextLine();
 
-                    Movie m = new Movie(name, gener, releasedYear, rating, i);
+                    Movie m = new Movie(name, genre, releasedYear, rating, i);
                     i++;
                     normalMovieData.add(m);
                 }
@@ -113,12 +116,12 @@ public class MovieData implements MovieInterface {
                 int i = 0;
 
                 while (sc.hasNext()) {
-                    gener = sc.next();
+                    genre = sc.next();
                     releasedYear = sc.nextInt();
                     rating = sc.nextDouble();
                     name = sc.nextLine();
-                    
-                    Movie m = new Movie(name, gener, releasedYear, rating, i);
+
+                    Movie m = new Movie(name, genre, releasedYear, rating, i);
                     i++;
                     premiumMovieData.add(m);
                 }
@@ -146,19 +149,19 @@ public class MovieData implements MovieInterface {
 
         return sb.toString();
     }
-    
-    public String getMovieByID(int id){
+
+    public String getMovieByID(int id) {
         StringBuilder sb = new StringBuilder();
-        for (Movie m : normalMovieData){
-            if (m.getid() == id){
+        for (Movie m : normalMovieData) {
+            if (m.getid() == id) {
                 sb.append(m.getName());
             }
-        } 
-        for (Movie m : premiumMovieData){
-            if (m.getid() == id){
+        }
+        for (Movie m : premiumMovieData) {
+            if (m.getid() == id) {
                 sb.append(m.getName());
             }
-        } 
+        }
         return sb.toString();
     }
 
@@ -167,4 +170,11 @@ public class MovieData implements MovieInterface {
         data.load("n");
         System.out.println(data.getMovieByID(1));
     }
+
+    @Override
+    public void empty() {
+        normalMovieData.clear();
+        premiumMovieData.clear();
+    }
+
 }
