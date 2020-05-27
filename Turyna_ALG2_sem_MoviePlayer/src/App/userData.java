@@ -1,4 +1,4 @@
-package Netflix;
+package App;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -13,6 +13,7 @@ import utils.Exceptions;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -34,24 +35,49 @@ public class userData implements UserInterface {
         return false;
     }
 
+    public void writeToFile(String username, String action) {
+        LocalDateTime now = LocalDateTime.now();
+
+        File f = new File("data/UserActions.txt");
+        BufferedWriter writer;
+        try {
+            writer = new BufferedWriter(new FileWriter(f, true));
+            writer.write("\n" + username + " " + action + " " + now);
+            writer.close();
+        } catch (IOException ex) {
+            System.out.println("IOException");
+        }
+
+    }
+
     public void login(String username) {
+        String action = "Logged in";
+        writeToFile(username, action);
+
     }
 
     public boolean check(String username, String password) throws FileNotFoundException {
-        // true if matched
-        boolean check = true;
-        loadUserData();
-        for (User u : data) {
-            if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
-                return true;
+        try {
+            // true if matched
+            boolean check = true;
+            loadUserData();
+            for (User u : data) {
+                if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
+                    return true;
+                }
             }
+            ex.loginError(username);
+
+        } catch (IOException e) {
+            System.out.println("IOException");
         }
-        return ex.loginError();
+        return false;
 
     }
 
     public void createNewUser(String username, String password) throws IOException {
         String status = "n";
+        String action = "New user created";
 
         try {
             File f = new File("data/Accounts.txt");
@@ -66,6 +92,7 @@ public class userData implements UserInterface {
             fileWriter.write(str);
             fileWriter.close();
 
+            writeToFile(username, action);
         } catch (Exception e) {
             ex.IOException();
         }
@@ -82,20 +109,24 @@ public class userData implements UserInterface {
         String status;
         String password;
 
-        try {
-            f = new File("data/Accounts.txt");
-            sc = new Scanner(f);
-            while (sc.hasNext()) {
-                id = sc.nextInt();
-                username = sc.next();
-                status = sc.next();
-                password = sc.next();
-                User u = new User(status, username, id, password);
-                data.add(u);
+        f = new File("data/Accounts.txt");
+        if (f == null) {
+            try {
+                ex.FileNotFound(f.toString());
+            } catch (IOException ex) {
+                System.out.println("IOException");
             }
-        } catch (Exception e) {
-            ex.FileNotFound();
         }
+        sc = new Scanner(f);
+        while (sc.hasNext()) {
+            id = sc.nextInt();
+            username = sc.next();
+            status = sc.next();
+            password = sc.next();
+            User u = new User(status, username, id, password);
+            data.add(u);
+        }
+
     }
 
     public String printListOfUsers() {
@@ -146,6 +177,7 @@ public class userData implements UserInterface {
         File inputFile = new File("data/Accounts.txt");
         File tempFile = new File("data/tmp.txt");
 
+        String action = "Password changed";
         List<String> lines = new ArrayList<>();
 
         try {
@@ -173,6 +205,7 @@ public class userData implements UserInterface {
             Files.deleteIfExists(Paths.get("data/Accounts.txt"));
             Files.copy(Paths.get("data/tmp.txt"), Paths.get("data/Accounts.txt"));
             Files.deleteIfExists(Paths.get("data/tmp.txt"));
+            writeToFile(username, action);
         } catch (IOException x) {
             // File permission problems are caught here.
             System.err.println(x);
@@ -185,6 +218,7 @@ public class userData implements UserInterface {
         File inputFile = new File("data/Accounts.txt");
         File tempFile = new File("data/tmp.txt");
 
+        String action = "Status improved";
         List<String> lines = new ArrayList<>();
 
         try {
@@ -212,6 +246,8 @@ public class userData implements UserInterface {
             Files.deleteIfExists(Paths.get("data/Accounts.txt"));
             Files.copy(Paths.get("data/tmp.txt"), Paths.get("data/Accounts.txt"));
             Files.deleteIfExists(Paths.get("data/tmp.txt"));
+
+            writeToFile(username, action);
         } catch (IOException x) {
             // File permission problems are caught here.
             System.err.println(x);
@@ -225,7 +261,10 @@ public class userData implements UserInterface {
         data.improveStatus("Jirka");
     }
 
-    public String watchMovie(String movie) {
+    public String watchMovie(String movie, String username) {
+        
+        String action = "Watching a movie" + movie;
+        writeToFile(username, action);
         return "You are watching movie: " + movie;
     }
 

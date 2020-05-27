@@ -1,4 +1,4 @@
-package Netflix;
+package App;
 
 import java.io.FileNotFoundException;
 
@@ -8,12 +8,12 @@ import java.io.FileNotFoundException;
  */
 public interface MovieInterface {
     public String listByGenre(String genre) throws IllegalArgumentException;
-    public String listByYear(int year) throws IllegalArgumentException;
-    public String listByRating(double rating) throws IllegalArgumentException;
+    public String listByYear(String status);
+    public String listByRating(String rating) throws IllegalArgumentException;
     public String printListofMovies();
     public void load(String status) throws FileNotFoundException;
 
-    public String getMovieByID(int movie);
-
+    public String getMovieById(int movie);
+    public void playSound(String movie);
     public void empty();
 }

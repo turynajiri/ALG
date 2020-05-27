@@ -1,4 +1,4 @@
-package Netflix;
+package App;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -21,7 +21,7 @@ public interface UserInterface {
     public void changePassword(String name, String newPass);
     public void improveStatus(String name);
 
-    public String watchMovie(String movie);
+    public String watchMovie(String movie, String username);
 
     public void empty();
 }

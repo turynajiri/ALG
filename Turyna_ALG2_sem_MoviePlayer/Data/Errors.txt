@@ -1,0 +1,25 @@
+ Login Error 2020-05-27T18:19:37.635518700
+ Login Error 2020-05-27T18:19:46.291049900
+ File Not Found data\Accounts.txt 2020-05-27T18:43:02.532596300
+Genre not found  asd 2020-05-27T19:07:06.557213200
+
+Error during login  kappaaa 2020-05-27T21:22:04.865121
+File not found   Shrek 2020-05-27T21:31:40.151336700
+File not found   Shrek 2020-05-27T21:33:19.509779
+File not found   Shrek 2020-05-27T21:37:51.659494500
+File not found   Shrek 2020-05-27T21:40:08.874656100
+File not found   Shrek 2020-05-27T21:41:42.951059800
+File not found   Shrek 2020-05-27T21:42:41.273868700
+File not found   Shrek 2020-05-27T21:46:01.069731600
+File not found   Titanic 2020-05-27T22:15:03.937493200
+Genre not found  sasd 2020-05-27T22:22:04.632206200
+Error during login  Jirkja 2020-05-27T22:37:16.881762100
+Error during login  Jirka 2020-05-27T22:41:28.528545700
+Wrong rating 2020-05-27T22:43:33.548350900
+Error during login  Jirka 2020-05-27T22:47:10.923134400
+Genre not found  asd 2020-05-27T22:47:41.813268100
+Wrong rating 2020-05-27T22:47:41.813268100
+Year has to be a number 2020-05-27T22:47:41.813268100
+Year has to be a number 2020-05-27T22:47:41.813268100
+Year has to be a number 2020-05-27T22:47:41.813268100
+Year has to be a number 2020-05-27T22:49:36.275675200

@@ -1,4 +1,4 @@
-package Netflix;
+package App;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
