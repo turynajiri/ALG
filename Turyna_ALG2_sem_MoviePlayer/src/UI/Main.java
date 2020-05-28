@@ -31,7 +31,7 @@ public class Main {
         boolean check = false;
 
         do {
-            System.out.println(getMenu1());
+            System.out.println(getMenu1 ());
             choice1 = sc.nextInt();
             switch (choice1) {
                 // Log in

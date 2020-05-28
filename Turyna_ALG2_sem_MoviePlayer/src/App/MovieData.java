@@ -94,7 +94,11 @@ public class MovieData implements MovieInterface {
                 sb.append(m.getName() + " " + m.getReleasedYear() + "\n");
             }
         }
-
+        try {
+            load(status);
+        } catch (FileNotFoundException ex) {
+            System.out.println("IOException");
+        }
         return sb.toString();
     }
 
@@ -125,7 +129,8 @@ public class MovieData implements MovieInterface {
     }
 
     public void load(String status) throws FileNotFoundException {
-
+        empty();
+        
         File f;
         Scanner sc;
 

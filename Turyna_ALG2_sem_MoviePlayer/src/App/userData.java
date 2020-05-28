@@ -129,15 +129,6 @@ public class userData implements UserInterface {
 
     }
 
-    public String printListOfUsers() {
-        StringBuilder sb = new StringBuilder();
-        for (User u : data) {
-            sb.append(u);
-            sb.append("\n");
-        }
-        return sb.toString();
-    }
-
     public String getStatusByUsername(String username) {
         StringBuilder sb = new StringBuilder();
         for (User u : data) {
