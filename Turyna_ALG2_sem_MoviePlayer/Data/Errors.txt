@@ -23,3 +23,43 @@ Year has to be a number 2020-05-27T22:47:41.813268100
 Year has to be a number 2020-05-27T22:47:41.813268100
 Year has to be a number 2020-05-27T22:47:41.813268100
 Year has to be a number 2020-05-27T22:49:36.275675200
+Error during login  jama 2020-05-28T00:20:29.983947200
+Error during login  jama 2020-05-28T00:21:02.303511100
+Error during login  jama 2020-05-28T00:21:13.620921800
+Error during login  jama 2020-05-28T00:21:13.620921800
+Error during login  jama 2020-05-28T00:23:15.815306700
+Error during login  jama 2020-05-28T00:49:25.584654600
+Error during login  jama 2020-05-28T01:18:49.399667700
+Error during login  jama 2020-05-28T01:18:49.399667700
+Error during login  jama 2020-05-28T01:30:39.386989
+Error during login  jama 2020-05-28T01:30:39.386989
+Error during login  jama 2020-05-28T01:30:39.386989
+Error during login  jama 2020-05-28T01:30:39.386989
+Error during login  jama 2020-05-28T01:30:39.386989
+Error during login  jama 2020-05-28T01:30:39.386989
+Error during login  jama 2020-05-28T01:30:39.386989
+Error during login  jama 2020-05-28T01:30:39.386989
+Error during login  jama 2020-05-28T01:30:39.386989
+Error during login  jama 2020-05-28T01:30:39.386989
+Error during login  jama 2020-05-28T01:30:39.386989
+Error during login  jama 2020-05-28T01:31:31.820926100
+Error during login  jama 2020-05-28T01:32:06.397443400
+Error during login  jama 2020-05-28T01:36:13.196590700
+Error during login  jama 2020-05-28T01:39:58.974461500
+Error during login  jama 2020-05-28T01:46:37.029686500
+Error during login  jama 2020-05-28T01:46:37.029686500
+Error during login  jama 2020-05-28T01:47:26.608033100
+Error during login  jama 2020-05-28T01:50:11.968906800
+Error during login  jama 2020-05-28T01:50:41.787251300
+Error during login  jama 2020-05-28T01:51:29.115036400
+Error during login  jama 2020-05-28T01:52:29.402088700
+Error during login  jama 2020-05-28T01:53:11.267563700
+Error during login  jama 2020-05-28T01:53:45.800303100
+Error during login  jama 2020-05-28T01:54:09.065582900
+Error during login  jama 2020-05-28T01:54:41.369670300
+Error during login  jama 2020-05-28T01:56:45.464005
+Error during login  jama 2020-05-28T01:58:31.231023200
+Error during login  jama 2020-05-28T01:59:19.454188600
+Error during login  jama 2020-05-28T01:59:30.089865500
+File not found   Jak dostat tatinka do polepsovny 2020-05-28T02:03:36.255384800
+Error during login  0 2020-05-28T02:32:24.169758100

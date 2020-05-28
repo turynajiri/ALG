@@ -36,6 +36,7 @@ public class Main {
             switch (choice1) {
                 // Log in
                 case 1:
+                    System.out.println(ui.getStatusByUsername(name));
 
                     System.out.println("\n Username:");
                     String username = sc.next();
@@ -43,20 +44,16 @@ public class Main {
                     String password = sc.next();
 
                     if (ui.check(username, password)) {
-
                         check = true;
                         name = username;
                         ui.login(username);
                         break;
+                    } else {
+                        continue;
                     }
-                    username = null;
-                    password = null;
-                    break;
-
                 // Register new user    
                 case 2:
                     ui.loadUserData();
-
                     System.out.println("\n Username:");
                     String newUsername = sc.next();
                     System.out.println("\n Password: \n");
@@ -65,6 +62,7 @@ public class Main {
                     if (!ui.checkIfExists(newUsername)) {
                         ui.createNewUser(newUsername, newPassword);
                         System.out.println("\n User created, try loging in! \n");
+                        ui.loadUserData();
 
                     } else {
                         System.out.println("\n User with this name already exists. Try again \n");
@@ -77,15 +75,13 @@ public class Main {
                     break;
             }
             break;
-        } while (choice1 != 0 || check);
-
+        } while (choice1 != 0);
         if (check) {
 
             MovieInterface mi = new MovieData();
             int movie;
-
             // normal or premium user
-            if ((ui.getStatusByUsername(name).equals("n") || ui.getStatusByUsername(name).equals("p"))) {
+            if (ui.getStatusByUsername(name).equals("n") || ui.getStatusByUsername(name).equals("p")) {
                 do {
                     System.out.println(getMenu2());
                     choice2 = sc.nextInt();
@@ -127,7 +123,6 @@ public class Main {
                             } else {
                                 ex.OldPasswordNotMatched();
                             }
-                            ui.empty();
                             ui.loadUserData();
 
                             break;
@@ -139,7 +134,6 @@ public class Main {
                             } else {
                                 System.out.println("\n You are already a Premium user \n");
                             }
-                            ui.empty();
                             ui.loadUserData();
                             break;
 
@@ -162,7 +156,7 @@ public class Main {
                                             mi.empty();
                                             mi.load("n");
 
-                                            System.out.println("\n Insert genre to filter by (Comedy) \n");
+                                            System.out.println("\n Insert genre to filter by (Comedy, Romantic, Drama) \n");
                                             genre = sc.next();
                                             System.out.println(mi.listByGenre(genre));
 
@@ -185,7 +179,7 @@ public class Main {
                                             System.out.println("\n Insert rating to print List of movies with equal or higher rating \n");
                                             rating = sc.next();
                                             System.out.println(mi.listByRating(rating));
-                                            
+
                                         } else {
                                             mi.empty();
                                             mi.load("p");
@@ -202,7 +196,7 @@ public class Main {
                                         if (ui.getStatusByUsername(name).equals("n")) {
                                             mi.empty();
                                             mi.load("n");
-                                            
+
                                             System.out.println(mi.listByYear(ui.getStatusByUsername(name)));
 
                                         } else {

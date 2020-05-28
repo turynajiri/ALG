@@ -15,6 +15,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -53,26 +55,23 @@ public class userData implements UserInterface {
     public void login(String username) {
         String action = "Logged in";
         writeToFile(username, action);
-
     }
 
     public boolean check(String username, String password) throws FileNotFoundException {
-        try {
-            // true if matched
-            boolean check = true;
-            loadUserData();
-            for (User u : data) {
-                if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
-                    return true;
-                }
+        // true if matched
+        empty();
+        loadUserData();
+        for (User u : data) {
+            if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
+                return true;
             }
+        }
+        try {
             ex.loginError(username);
-
-        } catch (IOException e) {
+        } catch (IOException ex) {
             System.out.println("IOException");
         }
         return false;
-
     }
 
     public void createNewUser(String username, String password) throws IOException {
@@ -100,7 +99,8 @@ public class userData implements UserInterface {
     }
 
     public void loadUserData() throws FileNotFoundException {
-
+        empty();
+        
         File f;
         Scanner sc;
 
@@ -262,7 +262,7 @@ public class userData implements UserInterface {
     }
 
     public String watchMovie(String movie, String username) {
-        
+
         String action = "Watching a movie" + movie;
         writeToFile(username, action);
         return "You are watching movie: " + movie;
