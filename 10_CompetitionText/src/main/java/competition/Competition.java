@@ -15,7 +15,7 @@ public class Competition {
 
     private ArrayList<Runner> runners = null;
 
-    public void load(String startFile, String finishFile) {
+    public void load(String startFile, String finishFile) throws FileNotFoundException {
         // nacitani pomoci Scanneru
         File startFileF = new File(startFile);
         Scanner inStart = new Scanner(startFileF);

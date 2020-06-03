@@ -1,7 +1,5 @@
 package elevengame;
 
-import jdk.nashorn.api.tree.ForInLoopTree;
-
 /**
  * Represents the table with cards to play and a deck
  *

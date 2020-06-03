@@ -17,9 +17,6 @@ public class Main {
 
     public static Scanner sc = new Scanner(System.in);
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) throws FileNotFoundException, IOException {
         UserInterface ui = new userData();
         String name = null;
@@ -34,9 +31,9 @@ public class Main {
             System.out.println(getMenu1 ());
             choice1 = sc.nextInt();
             switch (choice1) {
+                
                 // Log in
                 case 1:
-                    System.out.println(ui.getStatusByUsername(name));
 
                     System.out.println("\n Username:");
                     String username = sc.next();
@@ -51,6 +48,7 @@ public class Main {
                     } else {
                         continue;
                     }
+                    
                 // Register new user    
                 case 2:
                     ui.loadUserData();
@@ -90,7 +88,6 @@ public class Main {
                         // Watch a movie
                         case 1:
                             if (ui.getStatusByUsername(name).equals("n")) {
-                                mi.empty();
                                 mi.load("n");
                                 System.out.println(mi.printListofMovies());
                                 System.out.println("\n Which movie would you like to watch?? \n");
@@ -100,7 +97,6 @@ public class Main {
 
                             }
                             if (ui.getStatusByUsername(name).equals("p")) {
-                                mi.empty();
                                 mi.load("p");
                                 System.out.println(mi.printListofMovies());
                                 System.out.println("\n Which movie would you like to watch?? \n");
@@ -153,7 +149,6 @@ public class Main {
                                     // Filter by genre
                                     case 1:
                                         if (ui.getStatusByUsername(name).equals("n")) {
-                                            mi.empty();
                                             mi.load("n");
 
                                             System.out.println("\n Insert genre to filter by (Comedy, Romantic, Drama) \n");
@@ -161,7 +156,6 @@ public class Main {
                                             System.out.println(mi.listByGenre(genre));
 
                                         } else {
-                                            mi.empty();
                                             mi.load("p");
 
                                             System.out.println("\n Insert genre to filrer by (Comedy, Romantic, Drama, Sci-fi) \n");
@@ -173,7 +167,6 @@ public class Main {
                                     // Filter by rating
                                     case 2:
                                         if (ui.getStatusByUsername(name).equals("n")) {
-                                            mi.empty();
                                             mi.load("n");
 
                                             System.out.println("\n Insert rating to print List of movies with equal or higher rating \n");
@@ -181,7 +174,6 @@ public class Main {
                                             System.out.println(mi.listByRating(rating));
 
                                         } else {
-                                            mi.empty();
                                             mi.load("p");
 
                                             System.out.println("\n Insert rating to print List of movies with equal or higher rating \n");
@@ -194,13 +186,11 @@ public class Main {
                                     // Filer by year of release
                                     case 3:
                                         if (ui.getStatusByUsername(name).equals("n")) {
-                                            mi.empty();
                                             mi.load("n");
 
                                             System.out.println(mi.listByYear(ui.getStatusByUsername(name)));
 
                                         } else {
-                                            mi.empty();
                                             mi.load("p");
 
                                             System.out.println(mi.listByYear(ui.getStatusByUsername(name)));

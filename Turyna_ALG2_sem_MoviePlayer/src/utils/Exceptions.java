@@ -4,7 +4,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  *
@@ -19,20 +18,19 @@ public class Exceptions {
         writeToFile(action, username);
 
         System.out.println("\n" + "Error!" + "\n" + "Credentials do not match. Try again");
-
     }
 
     public void FileNotFound(String file) throws java.io.IOException {
         String action = "File not found ";
         writeToFile(action, file);
-        
+
         System.out.println(action);
     }
 
     public void InvalidUserArgument(String status) throws java.io.IOException {
         String action = "Wrong user argument ";
         writeToFile(action, status);
-        
+
         System.out.println(action);
     }
 
@@ -66,15 +64,15 @@ public class Exceptions {
         writeToFile(action);
         System.out.println(action);
     }
-    
-        public void writeToFile(String action, String something) throws java.io.IOException {
+
+    public void writeToFile(String action, String something) throws java.io.IOException {
         File f = new File("data/Errors.txt");
         BufferedWriter writer = new BufferedWriter(new FileWriter(f, true));
-        writer.write("\n"+ action + " " + something + " "+ now);
+        writer.write("\n" + action + " " + something + " " + now);
         writer.close();
     }
-    
-    public void writeToFile(String action) throws java.io.IOException{
+
+    public void writeToFile(String action) throws java.io.IOException {
         File f = new File("data/Errors.txt");
         BufferedWriter writer = new BufferedWriter(new FileWriter(f, true));
         writer.write("\n" + action + " " + now);

@@ -15,8 +15,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -25,9 +23,10 @@ import java.util.logging.Logger;
 public class userData implements UserInterface {
 
     Exceptions ex = new Exceptions();
-
     private ArrayList<User> data = new ArrayList<>();
 
+    // Volá se při vytváření nového účtu
+    // Kontroluje jestli už neexistuje uživatel se stejným Username
     public boolean checkIfExists(String username) {
         for (User u : data) {
             if (u.getUsername().equals(username)) {
@@ -37,7 +36,8 @@ public class userData implements UserInterface {
         return false;
     }
 
-    public void writeToFile(String username, String action) {
+    // Zapisuje do souboru UserActions.txt username a akci
+    public void writeToFile(String username, String action) throws IOException {
         LocalDateTime now = LocalDateTime.now();
 
         File f = new File("data/UserActions.txt");
@@ -46,18 +46,24 @@ public class userData implements UserInterface {
             writer = new BufferedWriter(new FileWriter(f, true));
             writer.write("\n" + username + " " + action + " " + now);
             writer.close();
-        } catch (IOException ex) {
-            System.out.println("IOException");
+        } catch (IOException e) {
+            ex.writeToFile("IOException", action);
         }
-
     }
 
-    public void login(String username) {
+    // Volá writeToFile s akcí "Logged in"
+    public void login(String username) throws IOException {
         String action = "Logged in";
-        writeToFile(username, action);
+        try {
+            writeToFile(username, action);
+        } catch (IOException e) {
+            ex.writeToFile("IOException", action);
+        }
     }
 
-    public boolean check(String username, String password) throws FileNotFoundException {
+    // Volá se před loginem 
+    // Kontroluje jestli se shodej uživatelské jméno a heslo
+    public boolean check(String username, String password) throws FileNotFoundException, IOException {
         // true if matched
         empty();
         loadUserData();
@@ -68,12 +74,14 @@ public class userData implements UserInterface {
         }
         try {
             ex.loginError(username);
-        } catch (IOException ex) {
-            System.out.println("IOException");
+        } catch (IOException e) {
+            ex.writeToFile("IOException", "check");
+
         }
         return false;
     }
 
+    // Vytvoří nového uživatele a uloží ho do souboru
     public void createNewUser(String username, String password) throws IOException {
         String status = "n";
         String action = "New user created";
@@ -93,14 +101,14 @@ public class userData implements UserInterface {
 
             writeToFile(username, action);
         } catch (Exception e) {
-            ex.IOException();
+            ex.writeToFile("IOException", "creating new user");
         }
-
     }
 
-    public void loadUserData() throws FileNotFoundException {
+    // Načte všechny uživatelská data ze souboru Accounts.txt
+    public void loadUserData() throws FileNotFoundException, IOException {
         empty();
-        
+
         File f;
         Scanner sc;
 
@@ -109,26 +117,31 @@ public class userData implements UserInterface {
         String status;
         String password;
 
-        f = new File("data/Accounts.txt");
-        if (f == null) {
+        f = new File("data/Accounts.txt"); // File separator
+        if (!f.exists()) {
             try {
                 ex.FileNotFound(f.toString());
-            } catch (IOException ex) {
-                System.out.println("IOException");
+            } catch (IOException e) {
+                ex.writeToFile("IOException", "loadUserData");
             }
         }
-        sc = new Scanner(f);
-        while (sc.hasNext()) {
-            id = sc.nextInt();
-            username = sc.next();
-            status = sc.next();
-            password = sc.next();
-            User u = new User(status, username, id, password);
-            data.add(u);
+        try {
+            sc = new Scanner(f);
+            while (sc.hasNext()) {
+                id = sc.nextInt();
+                username = sc.next();
+                status = sc.next();
+                password = sc.next();
+                User u = new User(status, username, id, password);
+                data.add(u);
+            }
+        } catch (FileNotFoundException e) {
+            ex.writeToFile("Scanner error", "FileNotFound");
+            throw new FileNotFoundException("Scanner error " + f.toString());
         }
-
     }
 
+    // Vrací status uživatele podle jeho uživatelského jména
     public String getStatusByUsername(String username) {
         StringBuilder sb = new StringBuilder();
         for (User u : data) {
@@ -140,6 +153,7 @@ public class userData implements UserInterface {
         return sb.toString();
     }
 
+    // Vrací heslo uživatele polde jeho uživatelského jména
     public String getPasswordByUsername(String username) {
         StringBuilder sb = new StringBuilder();
         for (User u : data) {
@@ -151,6 +165,7 @@ public class userData implements UserInterface {
         return sb.toString();
     }
 
+    // Vrací Id uživatele podle jeho uživatelského jména
     public String getIdByUsername(String username) {
         StringBuilder sb = new StringBuilder();
         for (User u : data) {
@@ -162,7 +177,8 @@ public class userData implements UserInterface {
         return sb.toString();
     }
 
-    public void changePassword(String username, String password) {
+    // Mění heslo uživatele a zapisuje ho zpět do souboru Accounts.txt
+    public void changePassword(String username, String password) throws IOException {
         Path inputFilePath = Paths.get("data/Accounts.txt");
         Path tempfilePath = Paths.get("data/tmp.txt");
         File inputFile = new File("data/Accounts.txt");
@@ -171,7 +187,7 @@ public class userData implements UserInterface {
         String action = "Password changed";
         List<String> lines = new ArrayList<>();
 
-        try {
+        try { // Try with resources
 
             BufferedReader reader = new BufferedReader(new FileReader(inputFile));
             BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
@@ -193,17 +209,21 @@ public class userData implements UserInterface {
 
             System.gc();
 
+            //inputFile.delete();
+            //tempFile.renameTo(inputFile);
+            
             Files.deleteIfExists(Paths.get("data/Accounts.txt"));
             Files.copy(Paths.get("data/tmp.txt"), Paths.get("data/Accounts.txt"));
             Files.deleteIfExists(Paths.get("data/tmp.txt"));
             writeToFile(username, action);
         } catch (IOException x) {
             // File permission problems are caught here.
-            System.err.println(x);
+            ex.writeToFile("IOException", "Change password");
         }
     }
 
-    public void improveStatus(String username) {
+    // Zlepší status uživatele z Normal User na Premium User a zápiše změnu do souboru Accounts.txt
+    public void improveStatus(String username) throws IOException {
         Path inputFilePath = Paths.get("data/Accounts.txt");
         Path tempfilePath = Paths.get("data/tmp.txt");
         File inputFile = new File("data/Accounts.txt");
@@ -241,25 +261,26 @@ public class userData implements UserInterface {
             writeToFile(username, action);
         } catch (IOException x) {
             // File permission problems are caught here.
-            System.err.println(x);
+            ex.writeToFile("IOException", "Improve status");
+
         }
 
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws FileNotFoundException, IOException {
         userData data = new userData();
         data.loadUserData();
         data.improveStatus("Jirka");
     }
 
-    public String watchMovie(String movie, String username) {
+    // Volá writeToFile s akcí WatchMovie
+    public String watchMovie(String movie, String username) throws IOException {
 
         String action = "Watching a movie" + movie;
         writeToFile(username, action);
         return "You are watching movie: " + movie;
     }
 
-    @Override
     public void empty() {
         data.clear();
     }

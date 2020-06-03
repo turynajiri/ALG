@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -24,7 +22,7 @@ public class MovieData implements MovieInterface {
     private ArrayList<Movie> normalMovieData = new ArrayList<>();
     private ArrayList<Movie> premiumMovieData = new ArrayList<>();
 
-    public void playSound(String movie) {
+    public void playSound(String movie) throws IOException {
         StringBuilder sb = new StringBuilder();
 
         sb.append("Data/Sounds/" + movie + ".wav");
@@ -41,13 +39,13 @@ public class MovieData implements MovieInterface {
         } catch (Exception e) {
             try {
                 ex.FileNotFound(movie);
-            } catch (IOException ex) {
-                System.out.println("IOException");
+            } catch (IOException ee) {
+                ex.writeToFile("IOException", "Play sound");
             }
         }
     }
 
-    public String listByGenre(String genre) throws IllegalArgumentException {
+    public String listByGenre(String genre) throws IllegalArgumentException, IOException {
         StringBuilder sb = new StringBuilder();
         boolean found = false;
         for (Movie m : normalMovieData) {
@@ -67,8 +65,8 @@ public class MovieData implements MovieInterface {
         if (!found) {
             try {
                 ex.GenreNotFound(genre);
-            } catch (IOException ex) {
-                System.out.println("IOException");
+            } catch (IOException e) {
+                ex.writeToFile("IOException", "List by genre");
             }
         }
 
@@ -79,10 +77,9 @@ public class MovieData implements MovieInterface {
         StringBuilder sb = new StringBuilder();
         if (status.equals("n")) {
             ArrayList<Movie> sortedData = normalMovieData;
-            Collections.sort(sortedData, Collections.reverseOrder(Comparator.comparing(Movie::getReleasedYear)));
-
+            Collections.sort(sortedData, Collections.reverseOrder(Comparator.comparing(Movie::getReleasedYear))); // Stream api
+            
             for (Movie m : normalMovieData) {
-
                 sb.append(m.getName() + " " + m.getReleasedYear() + "\n");
             }
         } else {
@@ -94,43 +91,43 @@ public class MovieData implements MovieInterface {
                 sb.append(m.getName() + " " + m.getReleasedYear() + "\n");
             }
         }
-        try {
-            load(status);
-        } catch (FileNotFoundException ex) {
-            System.out.println("IOException");
-        }
+
         return sb.toString();
     }
 
-    public String listByRating(String rating) throws IllegalArgumentException {
+    public String listByRating(String rating) throws IllegalArgumentException, IOException {
         StringBuilder sb = new StringBuilder();
 
         try {
             int rat = Integer.parseInt(rating);
-            for (Movie m : normalMovieData) {
-                if (m.getRating() >= rat) {
-                    sb.append(m.getName() + " " + m.getRating() + "\n");
+            if (rat < 0 || rat > 100) {
+                ex.wrongRating();
+            } else {
+                for (Movie m : normalMovieData) {
+                    if (m.getRating() >= rat) {
+                        sb.append(m.getName() + " " + m.getRating() + "\n");
+                    }
                 }
-            }
 
-            for (Movie m : premiumMovieData) {
-                if (m.getRating() >= rat) {
-                    sb.append(m.getName() + " " + m.getRating() + "\n");
+                for (Movie m : premiumMovieData) {
+                    if (m.getRating() >= rat) {
+                        sb.append(m.getName() + " " + m.getRating() + "\n");
+                    }
                 }
             }
         } catch (Exception e) {
             try {
                 ex.wrongRating();
-            } catch (IOException ex) {
-                System.out.println("IOException");
+            } catch (IOException ee) {
+                ex.writeToFile("IOException", " List by rating");
             }
         }
         return sb.toString();
     }
 
-    public void load(String status) throws FileNotFoundException {
+    public void load(String status) throws FileNotFoundException, IOException {
         empty();
-        
+
         File f;
         Scanner sc;
 
@@ -144,8 +141,9 @@ public class MovieData implements MovieInterface {
             if (f == null) {
                 try {
                     ex.FileNotFound(f.toString());
-                } catch (IOException ex) {
-                    System.out.println("IOException");
+                } catch (IOException e) {
+                    ex.writeToFile("IOException", "load");
+
                 }
 
             } else {
@@ -190,8 +188,8 @@ public class MovieData implements MovieInterface {
         } else {
             try {
                 ex.InvalidUserArgument(status);
-            } catch (IOException ex) {
-                System.out.println("IOException");
+            } catch (IOException e) {
+                ex.writeToFile("IOException", "load");
             }
         }
 
@@ -226,13 +224,12 @@ public class MovieData implements MovieInterface {
         return sb.toString();
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws FileNotFoundException, IOException {
         MovieData data = new MovieData();
         data.load("n");
         System.out.println(data.getMovieById(1));
     }
 
-    @Override
     public void empty() {
         normalMovieData.clear();
         premiumMovieData.clear();
